@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:56:00 by ababaei           #+#    #+#             */
-/*   Updated: 2021/11/02 18:19:38 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/11/16 15:16:14 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 # include <stdio.h>
 # include <pthread.h>
 # include <stdlib.h>
-# include <sys/times>
+# include <sys/time.h>
 # include <unistd.h>
+# include <limits.h>
 
 typedef struct s_args
 {
@@ -27,6 +28,7 @@ typedef struct s_args
 	int	time_sleep;
 	int	nb_eat;
 
+	int	timestamp;
 }			t_args;
 
 typedef struct s_phil
@@ -37,4 +39,10 @@ typedef struct s_phil
 	t_args	*args;
 }			t_phil;
 
-#endif PHILO_H
+int	parser(int argc, char **argv, t_args *args);
+int	initializer(t_args *args, t_phil **philos);
+
+long	ft_strtol(char *nptr, char **endptr, int base);
+
+
+#endif
