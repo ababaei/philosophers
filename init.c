@@ -1,5 +1,12 @@
 #include "philo.h"
 
+int init_mutex(t_args *args)
+{
+	pthread_mutex_init(&args->print_mtx, NULL);
+	pthread_mutex_init(&args->one_died, NULL);
+	return (0);
+}
+
 int initializer(t_args *args, t_phil **philos)
 {
 	int i;
@@ -13,7 +20,8 @@ int initializer(t_args *args, t_phil **philos)
 		(*philos)[i].id = i;
 		(*philos)[i].args = args;
 		(*philos)[i].r_fork = NULL;
-		if (pthread_mutex_init(&(*philos)[i].l_fork, NULL))
+		if (pthread_mutex_init(&(*philos)[i].l_fork, NULL) || \
+			pthread_mutex_init(&(*philos)[i].eating, NULL))
 			return (EXIT_FAILURE);
 		if (i == args->nb_philos - 1)
 			(*philos)[0].r_fork = &(*philos)[i].l_fork;
@@ -21,11 +29,16 @@ int initializer(t_args *args, t_phil **philos)
 			(*philos)[i].r_fork = &(*philos)[i + 1].l_fork;
 		i++;
 	}
+	init_mutex(args);
+
+
+/*
 	i = 0;
 	while (i < args->nb_philos)
 	{
 		printf("id = %d\n", (*philos)[i].id);
 		i++;
 	}
+	*/
 	return (0);
 }

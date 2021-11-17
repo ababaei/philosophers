@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:56:00 by ababaei           #+#    #+#             */
-/*   Updated: 2021/11/16 15:16:14 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/11/17 16:24:03 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,21 @@ typedef struct s_args
 	int	nb_eat;
 
 	int	timestamp;
+
+	pthread_mutex_t print_mtx;
+	pthread_mutex_t one_died;
 }			t_args;
 
 typedef struct s_phil
 {
 	int	id;
+	int is_dead;
+	int has_eaten;
+	
+	pthread_mutex_t eating;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t l_fork;
+	
 	t_args	*args;
 }			t_phil;
 
@@ -43,6 +51,8 @@ int	parser(int argc, char **argv, t_args *args);
 int	initializer(t_args *args, t_phil **philos);
 
 long	ft_strtol(char *nptr, char **endptr, int base);
+long	get_timestamp(void);
+long	ft_usleep(long usec);
 
 
 #endif

@@ -6,7 +6,7 @@
 #    By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/05 01:57:11 by ababaei           #+#    #+#              #
-#    Updated: 2021/11/16 11:04:30 by ababaei          ###   ########.fr        #
+#    Updated: 2021/11/17 11:46:59 by ababaei          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CC = gcc
 PHILO_SRC = main.c \
 			parser.c \
 			init.c \
-			ft_strtol.c
+			ft_strtol.c \
+			utils.c
 
 PHILO_OBJ = $(PHILO_SRC:.c=.o)
 
