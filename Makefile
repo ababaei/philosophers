@@ -6,7 +6,7 @@
 #    By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/05 01:57:11 by ababaei           #+#    #+#              #
-#    Updated: 2021/11/18 14:33:23 by ababaei          ###   ########.fr        #
+#    Updated: 2021/11/18 16:12:40 by ababaei          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ $(DIROBJ)%.o: %.c
 
 $(NAME):$(DIROBJS)
 	@echo Creating executable $(NAME)	
-	@$(CC) $(DIROBJ)*.o $(FLAGS) -fsanitize=thread -pthread -o $(NAME)
+	@$(CC) $(DIROBJ)*.o $(FLAGS) -fsanitize=thread -lpthread -o $(NAME)
 
 clean:
 	rm -rf $(DIROBJ)
