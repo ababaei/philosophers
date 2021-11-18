@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/11/17 11:44:40 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/11/18 14:44:53 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,24 @@ int	main(int argc, char **argv)
 {
 	t_args args;
 	t_phil *philos;
+	int i;
 
+	i = 0;
 	if (parser(argc, argv, &args))
 		return (EXIT_FAILURE);
 	if (initializer(&args, &philos))
 		return (EXIT_FAILURE);
-	printf("%ld\n", get_timestamp());
-	ft_usleep(5000);	
-	printf("%ld\n", get_timestamp());
+	while (i < args.nb_philos)
+	{
+		if (!pthread_create(&philos[i].life, NULL, philosopher, &philos[i]))
+			return (-1);
+		i++;
+	}
+	while (i < args.nb_philos)
+	{
+		if (!pthread_join(philos[i].life, NULL))
+			return (-1);
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }

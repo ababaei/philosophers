@@ -20,8 +20,7 @@ int initializer(t_args *args, t_phil **philos)
 		(*philos)[i].id = i;
 		(*philos)[i].args = args;
 		(*philos)[i].r_fork = NULL;
-		if (pthread_mutex_init(&(*philos)[i].l_fork, NULL) || \
-			pthread_mutex_init(&(*philos)[i].eating, NULL))
+		if (pthread_mutex_init(&(*philos)[i].l_fork, NULL))
 			return (EXIT_FAILURE);
 		if (i == args->nb_philos - 1)
 			(*philos)[0].r_fork = &(*philos)[i].l_fork;
