@@ -23,7 +23,7 @@ int initializer(t_args *args, t_phil **philos)
 		if (pthread_mutex_init(&(*philos)[i].l_fork, NULL))
 			return (EXIT_FAILURE);
 		if (i == args->nb_philos - 1)
-			(*philos)[0].r_fork = &(*philos)[i].l_fork;
+			(*philos)[args->nb_philos - 1].r_fork = &(*philos)[0].l_fork;
 		else
 			(*philos)[i].r_fork = &(*philos)[i + 1].l_fork;
 		i++;

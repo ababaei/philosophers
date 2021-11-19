@@ -19,9 +19,14 @@ int main(void)
 {
 	t_int	ret;
 	pthread_t	thread;
+	int n = 22;
+	int *ptr;
 
 	ret.ret = 0;
+	ptr = &n;
 
+	printf("n = %p\n", &n);
+	printf("ptr = %p\n", ptr);
 	pthread_mutex_init(&ret.mtx, NULL);
 	pthread_create(&thread, NULL, adder, &ret);
 

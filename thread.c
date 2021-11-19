@@ -15,8 +15,8 @@ void	eating(t_phil *phil)
 	pthread_mutex_unlock(&phil->args->print_mtx);
 	ft_usleep(phil->args->time_eat);
 	phil->has_eaten = 1;
-	pthread_mutex_unlock(phil->r_fork);
 	pthread_mutex_unlock(&phil->l_fork);
+	pthread_mutex_unlock(phil->r_fork);
 }
 
 void	dying(void *data)
