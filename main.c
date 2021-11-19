@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/11/18 16:07:06 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/11/19 12:14:42 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,15 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	while (i < args.nb_philos)
 	{
-		printf("TOTO\n");
+		printf("id = %d\n", philos[i].id);
+		i++;
+	}
+	i = 0;
+	pthread_create(&philos[0].life, NULL, philosopher, &philos[i]);
+	pthread_join(philos[0].life, NULL);
+/*
+	while (i < args.nb_philos)
+	{
 		if (!pthread_create(&philos[i].life, NULL, philosopher, &philos[i]))
 			return (-1);
 		i++;
@@ -37,9 +45,8 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (i < args.nb_philos)
 	{
-		if (!pthread_join(philos[i].life, NULL))
-			return (-1);
+		pthread_join(philos[i].life, NULL);
 		i++;
-	}
+	}*/
 	return (EXIT_SUCCESS);
 }

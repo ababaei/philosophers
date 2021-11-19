@@ -38,7 +38,7 @@ void	*philosopher(void *data)
 
 	phil = data;
 	phil->has_eaten = 1;
-//	eating(phil);
+	eating(phil);
 //	dying(phil);
 	// ft_usleep(50 * phil->id); //// PUT IT IN STARTER.C 
 	return (NULL);

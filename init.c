@@ -17,7 +17,7 @@ int initializer(t_args *args, t_phil **philos)
 		return (EXIT_FAILURE);
 	while (i < args->nb_philos)
 	{
-		(*philos)[i].id = i;
+		(*philos)[i].id = i + 1;
 		(*philos)[i].args = args;
 		(*philos)[i].r_fork = NULL;
 		if (pthread_mutex_init(&(*philos)[i].l_fork, NULL))
@@ -29,15 +29,5 @@ int initializer(t_args *args, t_phil **philos)
 		i++;
 	}
 	init_mutex(args);
-
-
-/*
-	i = 0;
-	while (i < args->nb_philos)
-	{
-		printf("id = %d\n", (*philos)[i].id);
-		i++;
-	}
-	*/
 	return (0);
 }
