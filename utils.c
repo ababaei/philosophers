@@ -19,15 +19,15 @@ long	get_timestamp(void)
 /////////////////MAY CAUSE OFFSET/////////////////////
 long	ft_usleep(long usec)
 {
-	long	start;
-	long	time;
+	long long	start;
+	long long	time;
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
 		return (-1);
 	start = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	time = 0;	
-	while (time < usec / 1000)
+	while (time < usec)
 	{
 		gettimeofday(&tv, NULL);
 		time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000) - start;

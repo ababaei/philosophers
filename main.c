@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/11/19 14:43:48 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/03 19:22:41 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,32 @@ int	main(int argc, char **argv)
 	int i;
 
 	i = 0;
+	args.end = 0;
 	if (parser(argc, argv, &args))
 		return (EXIT_FAILURE);
 	if (initializer(&args, &philos))
 		return (EXIT_FAILURE);
 	while (i < args.nb_philos)
 	{
-		printf("lf = %p\n", &philos[i].l_fork);
-		printf("rf = %p\n", philos[i].r_fork);
-		printf("id = %d\n", philos[i].id);
-		i++;
-	}
-	i = 0;
-//	pthread_create(&philos[0].life, NULL, philosopher, &philos[i]);
-//	pthread_join(philos[0].life, NULL);
-
-	while (i < args.nb_philos)
-	{
+		ft_usleep(5 * i); 
 		pthread_create(&philos[i].life, NULL, philosopher, &philos[i]);
 		i++;
 	}
-	i = 0;
+	while (!args.end)
+	{
+		i = 0;
+		while (i < args.nb_philos)
+		{
+			if (get_timestamp() - philos[i].lastmeal > args.time_die)
+			{
+				pthread_mutex_lock(&args.print_mtx);
+				printf("%ld %d died\n", get_timestamp(), philos[i].id);
+				pthread_mutex_unlock(&args.print_mtx);
+				args.end = 1;		
+			}	
+			i++;
+		}
+	}
 	while (i < args.nb_philos)
 	{
 		pthread_join(philos[i].life, NULL);

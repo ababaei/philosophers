@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:56:00 by ababaei           #+#    #+#             */
-/*   Updated: 2021/11/18 14:23:33 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/03 17:39:16 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,17 @@ typedef struct s_args
 	int	nb_eat;
 
 	int	timestamp;
+	int	end;
 
 	pthread_mutex_t print_mtx;
-	pthread_mutex_t one_died;
 }			t_args;
 
 typedef struct s_phil
 {
 	int	id;
-	int is_dead;
-	int has_eaten;
+	int lastmeal;
 	
 	pthread_t	life;
-	pthread_t	death;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t l_fork;
 	

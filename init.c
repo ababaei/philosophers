@@ -3,7 +3,6 @@
 int init_mutex(t_args *args)
 {
 	pthread_mutex_init(&args->print_mtx, NULL);
-	pthread_mutex_init(&args->one_died, NULL);
 	return (0);
 }
 
