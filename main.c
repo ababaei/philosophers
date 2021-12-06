@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/03 19:22:41 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/06 20:18:15 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,37 @@ int	main(int argc, char **argv)
 		i = 0;
 		while (i < args.nb_philos)
 		{
-			if (get_timestamp() - philos[i].lastmeal > args.time_die)
+			pthread_mutex_lock(&args.update_meal);
+			if (get_timestamp(&args) - philos[i].lastmeal > args.time_die)
 			{
 				pthread_mutex_lock(&args.print_mtx);
-				printf("%ld %d died\n", get_timestamp(), philos[i].id);
+				printf("%ld %d died\n", get_timestamp(&args), philos[i].id);
 				pthread_mutex_unlock(&args.print_mtx);
-				args.end = 1;		
-			}	
+				pthread_mutex_lock(&args.ending);
+				args.end = 1;
+				pthread_mutex_unlock(&args.ending);
+			}
+			pthread_mutex_unlock(&args.update_meal);
+			/*
+			else if (philos[i].nbmeal >= args.nb_eat)
+				args.end = 1;
+			if (philos[i].nbmeal < args.nb_eat)
+				args.end = 0;
+			*/
 			i++;
 		}
 	}
+	i = 0;
 	while (i < args.nb_philos)
 	{
 		pthread_join(philos[i].life, NULL);
 		i++;
 	}
+	while (i < args.nb_philos)
+	{
+		pthread_mutex_destroy(&philos[i].l_fork);
+		i++;
+	}
+	pthread_mutex_destroy(&args.print_mtx);
 	return (EXIT_SUCCESS);
 }

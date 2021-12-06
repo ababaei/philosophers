@@ -6,7 +6,7 @@
 #    By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/05 01:57:11 by ababaei           #+#    #+#              #
-#    Updated: 2021/12/03 19:04:47 by ababaei          ###   ########.fr        #
+#    Updated: 2021/12/06 19:52:35 by ababaei          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ DIROBJ = objs/
 
 DIROBJS = $(addprefix $(DIROBJ), $(PHILO_OBJ))
 
-FLAGS = -Wall -g -Wextra -Werror
+FLAGS = -Wall -g -Wextra -Werror -fsanitize=thread
+
 NAME = philo
 
 all:$(NAME)
@@ -37,7 +38,7 @@ $(DIROBJ)%.o: %.c
 
 $(NAME):$(DIROBJS)
 	@echo Creating executable $(NAME)	
-	@$(CC) $(DIROBJ)*.o $(FLAGS) -lpthread -o $(NAME)
+	@$(CC) -pthread $(DIROBJ)*.o $(FLAGS) -o $(NAME)
 
 clean:
 	rm -rf $(DIROBJ)

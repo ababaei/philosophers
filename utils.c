@@ -1,6 +1,6 @@
 #include "philo.h"
 
-long	get_timestamp(void)
+long	get_timestamp(t_args *args)
 {
 	static long start = 0;
 	long 		time;
@@ -10,9 +10,11 @@ long	get_timestamp(void)
 	if (gettimeofday(&tv, NULL))
 		return (-1);
 	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	pthread_mutex_lock(&args->ch_stamp);
 	if (start == 0)
 		 start = time; 
 	time = time - start;
+	pthread_mutex_unlock(&args->ch_stamp);
 	return (time);
 }
 
