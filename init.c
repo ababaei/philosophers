@@ -19,6 +19,7 @@ int initializer(t_args *args, t_phil **philos)
 		return (EXIT_FAILURE);
 	while (i < args->nb_philos)
 	{
+		args->timestamp = get_time();
 		(*philos)[i].id = i + 1;
 		(*philos)[i].nbmeal = 0;
 		(*philos)[i].lastmeal = 0;

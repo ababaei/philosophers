@@ -1,8 +1,19 @@
 #include "philo.h"
 
-long	get_timestamp(t_args *args)
+int check_death(t_args *args)
 {
-	static long start = 0;
+	pthread_mutex_lock(&args->ending);
+	if (args->end)
+	{
+		pthread_mutex_unlock(&args->ending);
+		return (1);	
+	}
+	pthread_mutex_unlock(&args->ending);
+	return (0);
+}
+
+long	get_time(void)
+{
 	long 		time;
 	struct timeval tv;
 
@@ -10,11 +21,6 @@ long	get_timestamp(t_args *args)
 	if (gettimeofday(&tv, NULL))
 		return (-1);
 	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	pthread_mutex_lock(&args->ch_stamp);
-	if (start == 0)
-		 start = time; 
-	time = time - start;
-	pthread_mutex_unlock(&args->ch_stamp);
 	return (time);
 }
 
@@ -22,19 +28,19 @@ long	get_timestamp(t_args *args)
 long	ft_usleep(long usec)
 {
 	long long	start;
-	long long	time;
-	struct timeval	tv;
 
-	if (gettimeofday(&tv, NULL))
-		return (-1);
-	start = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	time = 0;	
-	while (time < usec)
-	{
-		gettimeofday(&tv, NULL);
-		time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000) - start;
+	start = get_time();
+	while (get_time() - start < usec)
 		usleep(50);
-	}
-	return (time);
+	return (start);
 }
 
+void	write_status(char *str, t_phil *phil)
+{
+	long time;
+
+	time = 0;
+	time = get_time() - phil->args->timestamp;
+	if (time >= 0 && time <= INT_MAX && !check_death(phil->args))
+		printf("%ld %d %s\n", time, phil->id, str);
+}

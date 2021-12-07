@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:56:00 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/06 20:18:25 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/07 13:43:37 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_args
 	int	time_sleep;
 	int	nb_eat;
 
-	int	timestamp;
+	long	timestamp;
 	int	end;
 
 	pthread_mutex_t print_mtx;
@@ -40,7 +40,7 @@ typedef struct s_args
 typedef struct s_phil
 {
 	int	id;
-	int lastmeal;
+	long lastmeal;
 	int nbmeal;
 	
 	pthread_t	life;
@@ -55,7 +55,9 @@ int	initializer(t_args *args, t_phil **philos);
 void	*philosopher(void *data);
 
 long	ft_strtol(char *nptr, char **endptr, int base);
-long	get_timestamp(t_args *args);
+long	get_time(void);
 long	ft_usleep(long usec);
+void	write_status(char *str, t_phil *phil);
+int		check_death(t_args *args);
 
 #endif

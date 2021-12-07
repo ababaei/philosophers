@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/06 20:18:15 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/07 15:18:51 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,25 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include "philo.h"
+
+int get_killed(t_phil *phil)
+{
+	long ac_time;
+
+	ac_time = 0;
+	pthread_mutex_lock(&phil->args->update_meal);
+	if (phil->lastmeal == 0)
+		ac_time = get_time() - phil->args->timestamp;
+	else
+		ac_time = get_time();
+	if (ac_time - phil->lastmeal > (long)phil->args->time_die)
+	{
+		pthread_mutex_unlock(&phil->args->update_meal);
+		return (1);
+	}
+	pthread_mutex_unlock(&phil->args->update_meal);
+	return (0);
+}
 
 int	main(int argc, char **argv)
 {
@@ -34,22 +53,20 @@ int	main(int argc, char **argv)
 		pthread_create(&philos[i].life, NULL, philosopher, &philos[i]);
 		i++;
 	}
-	while (!args.end)
+	while (!check_death(&args))
 	{
 		i = 0;
 		while (i < args.nb_philos)
 		{
-			pthread_mutex_lock(&args.update_meal);
-			if (get_timestamp(&args) - philos[i].lastmeal > args.time_die)
+			if (get_killed(&philos[i]))
 			{
 				pthread_mutex_lock(&args.print_mtx);
-				printf("%ld %d died\n", get_timestamp(&args), philos[i].id);
+				write_status("died", &philos[i]);
 				pthread_mutex_unlock(&args.print_mtx);
 				pthread_mutex_lock(&args.ending);
 				args.end = 1;
 				pthread_mutex_unlock(&args.ending);
 			}
-			pthread_mutex_unlock(&args.update_meal);
 			/*
 			else if (philos[i].nbmeal >= args.nb_eat)
 				args.end = 1;

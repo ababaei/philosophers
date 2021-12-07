@@ -2,33 +2,33 @@
 
 void	eating(t_phil *phil)
 {
-	pthread_mutex_lock(phil->r_fork);
-	pthread_mutex_lock(&phil->args->print_mtx);
-	printf("%ld %d has taken a fork\n", get_timestamp(phil->args), phil->id);
-	pthread_mutex_unlock(&phil->args->print_mtx);
 	pthread_mutex_lock(&phil->l_fork);
 	pthread_mutex_lock(&phil->args->print_mtx);
-	printf("%ld %d has taken a fork\n", get_timestamp(phil->args), phil->id);
+	write_status("has taken a fork", phil);
+	pthread_mutex_unlock(&phil->args->print_mtx);
+	pthread_mutex_lock(phil->r_fork);
+	pthread_mutex_lock(&phil->args->print_mtx);
+	write_status("has taken a fork", phil);
 	pthread_mutex_unlock(&phil->args->print_mtx);
 	pthread_mutex_lock(&phil->args->print_mtx);
-	printf("%ld %d is eating\n", get_timestamp(phil->args), phil->id);
+	write_status("is eating", phil);
 	pthread_mutex_unlock(&phil->args->print_mtx);
 	pthread_mutex_lock(&phil->args->update_meal);
-	phil->lastmeal = get_timestamp(phil->args);
+	phil->lastmeal = get_time();
 	pthread_mutex_unlock(&phil->args->update_meal);
 	ft_usleep(phil->args->time_eat);
-	pthread_mutex_unlock(&phil->l_fork);
 	pthread_mutex_unlock(phil->r_fork);
+	pthread_mutex_unlock(&phil->l_fork);
 }
 
 void	sleeping(t_phil *phil)
 {
 	pthread_mutex_lock(&phil->args->print_mtx);
-	printf("%ld %d is sleeping\n", get_timestamp(phil->args), phil->id);
+	write_status("is sleeping", phil);
 	pthread_mutex_unlock(&phil->args->print_mtx);
 	ft_usleep(phil->args->time_sleep);
 	pthread_mutex_lock(&phil->args->print_mtx);
-	printf("%ld %d is thinking\n", get_timestamp(phil->args), phil->id);
+	write_status("is thinking", phil);
 	pthread_mutex_unlock(&phil->args->print_mtx);
 }
 
@@ -37,7 +37,7 @@ void	*philosopher(void *data)
 	t_phil	*phil;
 
 	phil = data;
-	while (!phil->args->end)
+	while (!check_death(phil->args))
 	{
 		eating(phil);
 		sleeping(phil);
