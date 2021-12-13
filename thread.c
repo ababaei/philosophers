@@ -37,6 +37,8 @@ void	*philosopher(void *data)
 	t_phil	*phil;
 
 	phil = data;
+	if (phil->id % 2 == 1)
+		ft_usleep(10);
 	while (!check_death(phil->args))
 	{
 		eating(phil);

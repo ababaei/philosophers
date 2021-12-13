@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/07 15:18:51 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/13 18:20:31 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	while (i < args.nb_philos)
 	{
-		ft_usleep(5 * i); 
 		pthread_create(&philos[i].life, NULL, philosopher, &philos[i]);
 		i++;
 	}
@@ -58,6 +57,7 @@ int	main(int argc, char **argv)
 		i = 0;
 		while (i < args.nb_philos)
 		{
+			usleep(100);
 			if (get_killed(&philos[i]))
 			{
 				pthread_mutex_lock(&args.print_mtx);

@@ -24,14 +24,13 @@ long	get_time(void)
 	return (time);
 }
 
-/////////////////MAY CAUSE OFFSET/////////////////////
 long	ft_usleep(long usec)
 {
 	long long	start;
 
 	start = get_time();
 	while (get_time() - start < usec)
-		usleep(50);
+		usleep(100);
 	return (start);
 }
 
