@@ -6,7 +6,7 @@
 #    By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/05 01:57:11 by ababaei           #+#    #+#              #
-#    Updated: 2021/12/13 19:01:30 by ababaei          ###   ########.fr        #
+#    Updated: 2021/12/14 15:35:22 by ababaei          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,7 @@ DIROBJ = objs/
 
 DIROBJS = $(addprefix $(DIROBJ), $(PHILO_OBJ))
 
-FLAGS = -Wall -g -Wextra -Werror 
-#-fsanitize=thread
+FLAGS = -Wall -g -Wextra -Werror #-fsanitize=thread
 
 NAME = philo
 

@@ -17,6 +17,9 @@ void	eating(t_phil *phil)
 	phil->lastmeal = get_time();
 	pthread_mutex_unlock(&phil->args->update_meal);
 	ft_usleep(phil->args->time_eat);
+	if (phil->nbmeal == phil->args->nb_eat)
+		phil->args->nb_philo_eat += 1;
+	phil->nbmeal++;
 	pthread_mutex_unlock(phil->r_fork);
 	pthread_mutex_unlock(&phil->l_fork);
 }

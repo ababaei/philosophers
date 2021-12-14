@@ -17,9 +17,10 @@ int initializer(t_args *args, t_phil **philos)
 	*philos = malloc(sizeof(t_phil) * args->nb_philos);
 	if (*philos == NULL)
 		return (EXIT_FAILURE);
+	args->timestamp = get_time();
+	args->nb_philo_eat = 0;
 	while (i < args->nb_philos)
 	{
-		args->timestamp = get_time();
 		(*philos)[i].id = i + 1;
 		(*philos)[i].nbmeal = 0;
 		(*philos)[i].lastmeal = 0;

@@ -23,6 +23,7 @@ int parser(int argc, char **argv, t_args *args)
 		{
 			if (fill_input(argv[5], &args->nb_eat))
 				return (-1);
+			return(0);
 		}
 		args->nb_eat = -1;
 		return (0);

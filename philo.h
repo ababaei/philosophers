@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:56:00 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/07 13:43:37 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/14 14:18:22 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_args
 	int	time_eat;
 	int	time_sleep;
 	int	nb_eat;
+	int nb_philo_eat;
 
 	long	timestamp;
 	int	end;

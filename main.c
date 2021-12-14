@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/13 18:20:31 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/14 18:55:32 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,21 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include "philo.h"
+
+void check_meal(t_phil *phil)
+{
+	pthread_mutex_lock(&phil->args->update_meal);
+	if (phil->nbmeal == phil->args->nb_eat
+			&& phil->args->nb_philo_eat < phil->args->nb_philos)
+		phil->args->nb_philo_eat += 1;
+	if (phil->args->nb_philo_eat == phil->args->nb_philos)
+	{
+		pthread_mutex_lock(&phil->args->ending);
+		phil->args->end = 1;	
+		pthread_mutex_unlock(&phil->args->ending);
+	}
+	pthread_mutex_unlock(&phil->args->update_meal);
+}
 
 int get_killed(t_phil *phil)
 {
@@ -27,6 +42,18 @@ int get_killed(t_phil *phil)
 	else
 		ac_time = get_time();
 	if (ac_time - phil->lastmeal > (long)phil->args->time_die)
+	{
+		pthread_mutex_unlock(&phil->args->update_meal);
+		return (1);
+	}
+	pthread_mutex_unlock(&phil->args->update_meal);
+	return (0);
+}
+
+int ate_enough(t_phil *phil)
+{
+	pthread_mutex_lock(&phil->args->update_meal);
+	if (phil->args->nb_philo_eat == phil->args->nb_philos)
 	{
 		pthread_mutex_unlock(&phil->args->update_meal);
 		return (1);
@@ -67,12 +94,12 @@ int	main(int argc, char **argv)
 				args.end = 1;
 				pthread_mutex_unlock(&args.ending);
 			}
-			/*
-			else if (philos[i].nbmeal >= args.nb_eat)
+			else if (ate_enough(&philos[i]))
+			{
+				pthread_mutex_lock(&args.ending);
 				args.end = 1;
-			if (philos[i].nbmeal < args.nb_eat)
-				args.end = 0;
-			*/
+				pthread_mutex_unlock(&args.ending);
+			}
 			i++;
 		}
 	}
