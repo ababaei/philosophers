@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ababaei <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/15 11:03:27 by ababaei           #+#    #+#             */
+/*   Updated: 2021/12/15 11:07:09 by ababaei          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	eating(t_phil *phil)
@@ -17,9 +29,6 @@ void	eating(t_phil *phil)
 	phil->lastmeal = get_time();
 	pthread_mutex_unlock(&phil->args->update_meal);
 	ft_usleep(phil->args->time_eat);
-	if (phil->nbmeal == phil->args->nb_eat)
-		phil->args->nb_philo_eat += 1;
-	phil->nbmeal++;
 	pthread_mutex_unlock(phil->r_fork);
 	pthread_mutex_unlock(&phil->l_fork);
 }
@@ -45,6 +54,16 @@ void	*philosopher(void *data)
 	while (!check_death(phil->args))
 	{
 		eating(phil);
+		if (++phil->nbmeal == phil->args->nb_eat)
+		{
+			phil->args->nb_philo_eat += 1;
+			if (phil->args->nb_philo_eat == phil->args->nb_philos)
+			{
+				pthread_mutex_lock(&phil->args->ending);
+				phil->args->end = 1;
+				pthread_mutex_unlock(&phil->args->ending);
+			}
+		}
 		sleeping(phil);
 	}
 	return (NULL);

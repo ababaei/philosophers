@@ -6,11 +6,11 @@
 #    By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/05 01:57:11 by ababaei           #+#    #+#              #
-#    Updated: 2021/12/14 15:35:22 by ababaei          ###   ########.fr        #
+#    Updated: 2021/12/15 10:19:41 by ababaei          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
+CC = clang
 
 PHILO_SRC = main.c \
 			parser.c \

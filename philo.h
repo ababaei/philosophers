@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:56:00 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/14 14:18:22 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/15 11:03:36 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_phil
 	int	id;
 	long lastmeal;
 	int nbmeal;
+	int eatenough;
 	
 	pthread_t	life;
 	pthread_mutex_t	*r_fork;
