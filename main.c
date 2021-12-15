@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/15 11:55:04 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/15 15:11:14 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,30 +34,12 @@ int	get_killed(t_phil *phil)
 	pthread_mutex_unlock(&phil->args->update_meal);
 	return (0);
 }
- 
-void	ender(t_args args, t_phil *philos)
+
+void	diner(t_args args, t_phil *philos)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while (++i < args.nb_philos)
-		pthread_join(philos[i].life, NULL);
-	while (++i < args.nb_philos)
-		pthread_mutex_destroy(&philos[i].l_fork);
-	pthread_mutex_destroy(&args.print_mtx);
-	free(philos);
-}
-
-int	main(int argc, char **argv)
-{
-	t_args	args;
-	t_phil	*philos;
-	int		i;
-
-	i = -1;
-	args.end = 0;
-	if (parser(argc, argv, &args) || initializer(&args, &philos))
-		return (EXIT_FAILURE);
 	while (++i < args.nb_philos)
 		pthread_create(&philos[i].life, NULL, philosopher, &philos[i]);
 	while (!check_death(&args))
@@ -77,6 +59,30 @@ int	main(int argc, char **argv)
 			}
 		}
 	}
+}
+
+void	ender(t_args args, t_phil *philos)
+{
+	int	i;
+
+	i = -1;
+	while (++i < args.nb_philos)
+		pthread_join(philos[i].life, NULL);
+	while (++i < args.nb_philos)
+		pthread_mutex_destroy(&philos[i].l_fork);
+	pthread_mutex_destroy(&args.print_mtx);
+	free(philos);
+}
+
+int	main(int argc, char **argv)
+{
+	t_args	args;
+	t_phil	*philos;
+
+	args.end = 0;
+	if (parser(argc, argv, &args) || initializer(&args, &philos))
+		return (EXIT_FAILURE);
+	diner(args, philos);
 	ender(args, philos);
 	return (EXIT_SUCCESS);
 }
