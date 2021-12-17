@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/17 14:04:50 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/17 15:46:58 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,13 @@ void	ender(t_args *args, t_phil **philos)
 	int	i;
 
 	i = -1;
+	if (args->nb_philos == 1)
+		pthread_detach((*philos)[0].life);
 	while (++i < args->nb_philos)
 		pthread_join((*philos)[i].life, NULL);
+	i = -1;
 	while (++i < args->nb_philos)
-		pthread_mutex_destroy(&(*philos[i]).l_fork);
+		pthread_mutex_destroy(&(*philos)[i].l_fork);
 	pthread_mutex_destroy(&args->print_mtx);
 	free(*philos);
 }

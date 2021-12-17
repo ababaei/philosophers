@@ -6,7 +6,7 @@
 /*   By: ababaei <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:03:27 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/17 14:05:56 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/17 14:53:09 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	*philosopher(void *data)
 		eating(phil);
 		if (++phil->nbmeal == phil->args->nb_eat && !check_death(phil->args))
 		{
+			pthread_mutex_lock(&phil->args->update_meal);
 			phil->args->nb_philo_eat += 1;
 			if (phil->args->nb_philo_eat == phil->args->nb_philos)
 			{
@@ -63,6 +64,7 @@ void	*philosopher(void *data)
 				phil->args->end = 1;
 				pthread_mutex_unlock(&phil->args->ending);
 			}
+			pthread_mutex_unlock(&phil->args->update_meal);
 		}
 		sleeping(phil);
 	}
