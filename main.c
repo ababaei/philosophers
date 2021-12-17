@@ -6,7 +6,7 @@
 /*   By: ababaei <ababaei@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 17:39:53 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/15 15:11:14 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/17 14:04:50 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,43 +35,43 @@ int	get_killed(t_phil *phil)
 	return (0);
 }
 
-void	diner(t_args args, t_phil *philos)
+void	diner(t_args *args, t_phil **philos)
 {
 	int	i;
 
 	i = -1;
-	while (++i < args.nb_philos)
-		pthread_create(&philos[i].life, NULL, philosopher, &philos[i]);
-	while (!check_death(&args))
+	while (++i < args->nb_philos)
+		pthread_create(&(*philos)[i].life, NULL, philosopher, &(*philos)[i]);
+	while (!check_death(args))
 	{
 		i = -1;
-		while (++i < args.nb_philos)
+		while (++i < args->nb_philos)
 		{
 			usleep(100);
-			if (get_killed(&philos[i]))
+			if (get_killed(&(*philos)[i]))
 			{
-				pthread_mutex_lock(&args.print_mtx);
-				write_status("died", &philos[i]);
-				pthread_mutex_unlock(&args.print_mtx);
-				pthread_mutex_lock(&args.ending);
-				args.end = 1;
-				pthread_mutex_unlock(&args.ending);
+				pthread_mutex_lock(&args->print_mtx);
+				write_status("died", &(*philos)[i]);
+				pthread_mutex_unlock(&args->print_mtx);
+				pthread_mutex_lock(&args->ending);
+				args->end = 1;
+				pthread_mutex_unlock(&args->ending);
 			}
 		}
 	}
 }
 
-void	ender(t_args args, t_phil *philos)
+void	ender(t_args *args, t_phil **philos)
 {
 	int	i;
 
 	i = -1;
-	while (++i < args.nb_philos)
-		pthread_join(philos[i].life, NULL);
-	while (++i < args.nb_philos)
-		pthread_mutex_destroy(&philos[i].l_fork);
-	pthread_mutex_destroy(&args.print_mtx);
-	free(philos);
+	while (++i < args->nb_philos)
+		pthread_join((*philos)[i].life, NULL);
+	while (++i < args->nb_philos)
+		pthread_mutex_destroy(&(*philos[i]).l_fork);
+	pthread_mutex_destroy(&args->print_mtx);
+	free(*philos);
 }
 
 int	main(int argc, char **argv)
@@ -82,7 +82,7 @@ int	main(int argc, char **argv)
 	args.end = 0;
 	if (parser(argc, argv, &args) || initializer(&args, &philos))
 		return (EXIT_FAILURE);
-	diner(args, philos);
-	ender(args, philos);
+	diner(&args, &philos);
+	ender(&args, &philos);
 	return (EXIT_SUCCESS);
 }

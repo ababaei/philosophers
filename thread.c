@@ -6,7 +6,7 @@
 /*   By: ababaei <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:03:27 by ababaei           #+#    #+#             */
-/*   Updated: 2021/12/15 11:07:09 by ababaei          ###   ########.fr       */
+/*   Updated: 2021/12/17 14:05:56 by ababaei          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*philosopher(void *data)
 	while (!check_death(phil->args))
 	{
 		eating(phil);
-		if (++phil->nbmeal == phil->args->nb_eat)
+		if (++phil->nbmeal == phil->args->nb_eat && !check_death(phil->args))
 		{
 			phil->args->nb_philo_eat += 1;
 			if (phil->args->nb_philo_eat == phil->args->nb_philos)
